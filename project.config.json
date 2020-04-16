@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "mini-app-tools",
   "description": "包含创建码生成器等辅助工具",
-  "appid": "touristappid",
+  "appid": "wx49cffe79dbc3f709",
   "setting": {
     "urlCheck": true,
     "es6": false,

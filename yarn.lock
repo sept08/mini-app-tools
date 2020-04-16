@@ -141,10 +141,10 @@
     swiper "^4.4.2"
     weui "^1.1.2"
 
-"@tarojs/plugin-babel@1.3.10":
-  version "1.3.10"
-  resolved "https://registry.yarnpkg.com/@tarojs/plugin-babel/-/plugin-babel-1.3.10.tgz#5017cefa15e69cce48d1ce9cedbe9e9df5cdf742"
-  integrity sha512-U7XLxuR07dTJxrU0AeoT3NKzk8ufL9YLV3NpkwrYRqv9B9p6bJYUsChjLX6TpiFjU/QvuJmkM5fXWt+hB83UUg==
+"@tarojs/plugin-babel@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@tarojs/plugin-babel/-/plugin-babel-2.1.4.tgz#65d9d9950f4eb899b48542c3dd456892c77a3ab7"
+  integrity sha512-7vxO9WZ10I9C48MgHZc7sS9W1j2iSIQS6TkD8ZwvlwfBmbmwZwbKTrXcHopTgnqRHehTuXtERGgYLSNFq3aIQQ==
   dependencies:
     babel-core "^6.26.0"
 
@@ -351,7 +351,7 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
-"@types/react@^16.4.6":
+"@types/react@^16.4.6", "@types/react@^16.7.3":
   version "16.9.34"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.34.tgz#f7d5e331c468f53affed17a8a4d488cd44ea9349"
   integrity sha512-8AJlYMOfPe1KGLKyHpflCg5z46n0b5DbRfqDksxBLBTUpB75ypDBAO9eCUcjNwE6LCUslwTz00yyG/X9gaVtow==
@@ -1596,6 +1596,11 @@ binary-extensions@^1.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.13.1.tgz#598afe54755b2868a5330d2aff9d4ebb53209b65"
   integrity sha512-Un7MIEDdUC5gNpcGDV97op1Ywk748MpHcFTHoYs6qnj1Z3j7I53VG3nwZhKzoBZmbdRNnb6WRdFlwl7tSDuZGw==
 
+bind-decorator@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/bind-decorator/-/bind-decorator-1.0.11.tgz#e41bc06a1f65dd9cec476c91c5daf3978488252f"
+  integrity sha1-5BvAah9l3ZzsR2yRxdrzl4SIJS8=
+
 bindings@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.5.0.tgz#10353c9e945334bc0511a6d90b38fbc7c9c504df"
@@ -2045,7 +2050,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -2547,6 +2552,11 @@ dashdash@^1.12.0:
   integrity sha1-hTz6D3y+L+1d4gMmuN1YEDX24vA=
   dependencies:
     assert-plus "^1.0.0"
+
+dayjs@^1.7.7:
+  version "1.8.24"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.24.tgz#2ef8a2ab9425eaf3318fe78825be1c571027488d"
+  integrity sha512-bImQZbBv86zcOWOq6fLg7r4aqMx8fScdmykA7cSh+gH1Yh8AM0Dbw0gHYrsOrza6oBBnkK+/OaR+UAa9UsMrDw==
 
 debug@*, debug@^4.0.1, debug@^4.1.0:
   version "4.1.1"
@@ -6554,7 +6564,7 @@ promise@^8.0.1:
   dependencies:
     asap "~2.0.6"
 
-prop-types@^15.6.1, prop-types@^15.7.2:
+prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8074,6 +8084,18 @@ tar@^2.0.0:
     block-stream "*"
     fstream "^1.0.12"
     inherits "2"
+
+taro-ui@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/taro-ui/-/taro-ui-2.3.3.tgz#06cfdfbfa36fb549079a38c814b23d9e360de4f7"
+  integrity sha512-jPTkOI9zAy0VeMjbhqeowaD7QgI/ERzKR33gZObPP893CjeUtjhq0U6/8xpYeuAdqs6PPWqfxj0WK3OUiBgstA==
+  dependencies:
+    "@types/react" "^16.7.3"
+    bind-decorator "^1.0.11"
+    classnames "^2.2.6"
+    dayjs "^1.7.7"
+    lodash "^4.17.10"
+    prop-types "^15.6.2"
 
 terser-webpack-plugin@^1.1.0:
   version "1.4.3"
