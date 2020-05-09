@@ -1,12 +1,15 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { AtButton, AtCard, AtInput } from 'taro-ui'
-import { View } from '@tarojs/components'
+import { View, Picker } from '@tarojs/components'
 import Secret from '../../utils/secret'
 import './index.scss'
 
 interface IState {
   key: string,
   offset: string,
+  codeType: string
+  codeTypeIndex: number,
+  codeTypeSelector: Array<string>,
 }
 
 export default class Index extends Component<{}, IState> {
@@ -26,6 +29,9 @@ export default class Index extends Component<{}, IState> {
     this.state = {
       key: '',
       offset: '',
+      codeTypeSelector: ['长码', '短码'],
+      codeType: '短码',
+      codeTypeIndex: 1,
     }
   }
 
@@ -40,9 +46,9 @@ export default class Index extends Component<{}, IState> {
   componentDidHide () { }
 
   generationCreateCode = () => {
-    const curTimestamp = new Date().getTime();
+    const curTimestamp = parseInt(`${new Date().getTime() / 60000}`);
     const offset = this.state.offset ? Secret.GenerateOffset(this.state.offset) : '';
-    const key = Secret.Encrypt(curTimestamp, offset);
+    const key = Secret.Encrypt_base64(curTimestamp, offset);
     this.setState({ key });
   };
 
@@ -54,10 +60,24 @@ export default class Index extends Component<{}, IState> {
     this.setState({ offset: value })
   };
 
+  changeCodeType = (value) => {
+    console.log(value);
+  };
+
   render () {
-    const { key, offset } = this.state;
+    const { key, offset, codeTypeSelector, codeTypeIndex } = this.state;
     return (
-      <View className='index'>
+      <View className='index container'>
+        <Picker
+            mode='selector'
+            range={codeTypeSelector}
+            value={codeTypeIndex}
+            onChange={this.changeCodeType}
+        >
+          <View className='picker'>
+            当前选择：{this.state.codeType}
+          </View>
+        </Picker>
         <AtCard
             note='点击生成'
             title='创建码'
