@@ -9,8 +9,9 @@ interface IState {
   offset: string,
   codeType: string
   codeTypeIndex: number,
-  codeTypeSelector: Array<string>,
 }
+
+const codeTypeList = ['短码', '长码'];
 
 export default class Index extends Component<{}, IState> {
   /**
@@ -29,9 +30,8 @@ export default class Index extends Component<{}, IState> {
     this.state = {
       key: '',
       offset: '',
-      codeTypeSelector: ['长码', '短码'],
       codeType: '短码',
-      codeTypeIndex: 1,
+      codeTypeIndex: 0,
     }
   }
 
@@ -46,10 +46,44 @@ export default class Index extends Component<{}, IState> {
   componentDidHide () { }
 
   generationCreateCode = () => {
-    const curTimestamp = parseInt(`${new Date().getTime() / 60000}`);
-    const offset = this.state.offset ? Secret.GenerateOffset(this.state.offset) : '';
-    const key = Secret.Encrypt_base64(curTimestamp, offset);
+    const curTimestamp = this.getCurrentTimestamp();
+    const offset = this.getoffset();
+    const key = this.createEncrptCode(curTimestamp, offset);
     this.setState({ key });
+  };
+
+  // 获取当前时间戳
+  getCurrentTimestamp = () => {
+    const { codeTypeIndex } = this.state;
+    if  (codeTypeIndex === 1) {
+      return new Date().getTime();
+    } else {
+      return parseInt(`${new Date().getTime() / 60000}`);
+    }
+  };
+
+  // 生成加密码
+  createEncrptCode = (origin, offset) => {
+    const { codeTypeIndex } = this.state;
+    if (codeTypeIndex === 0) {
+      return Secret.Encrypt_base64(origin, offset);
+    } else if (codeTypeIndex === 1) {
+      return Secret.Encrypt(origin, offset);
+    }
+  };
+
+  // 获取偏移量
+  getoffset = () => {
+    const { offset, codeTypeIndex } = this.state;
+    if (offset) {
+      if (codeTypeIndex === 0) {
+        return Number(offset);
+      } else if (codeTypeIndex === 1) {
+        return Secret.GenerateOffset(offset)
+      }
+    } else {
+      return codeTypeIndex === 0 ? 0 : '';
+    }
   };
 
   copyCreateCode = () => {
@@ -60,22 +94,23 @@ export default class Index extends Component<{}, IState> {
     this.setState({ offset: value })
   };
 
-  changeCodeType = (value) => {
-    console.log(value);
+  changeCodeType = (event) => {
+    const index = Number(event.detail.value)
+    this.setState({ codeType: codeTypeList[index], codeTypeIndex: index })
   };
 
   render () {
-    const { key, offset, codeTypeSelector, codeTypeIndex } = this.state;
+    const { key, offset, codeTypeIndex } = this.state;
     return (
       <View className='index container'>
         <Picker
             mode='selector'
-            range={codeTypeSelector}
+            range={codeTypeList}
             value={codeTypeIndex}
             onChange={this.changeCodeType}
         >
           <View className='picker'>
-            当前选择：{this.state.codeType}
+            编码方式：{this.state.codeType}
           </View>
         </Picker>
         <AtCard
