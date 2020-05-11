@@ -102,7 +102,7 @@ export default class Index extends Component<{}, IState> {
   render () {
     const { key, offset, codeTypeIndex } = this.state;
     return (
-      <View className='index container'>
+      <View className='index'>
         <Picker
             mode='selector'
             range={codeTypeList}
@@ -128,6 +128,7 @@ export default class Index extends Component<{}, IState> {
         </View>
         <View className='at-article'>
           <View className='at-article__h2'>Tips：</View>
+          <View className='at-article__p'>所生成的创建码，仅在三小时内有效。</View>
           <View className='at-article__p'>本小程序建议仅供内部员工使用，切勿分享给商家，如意外流出担心安全性问题，请联系开发人员获取创建码偏移量。在填写偏移量后重新生成创建码。</View>
         </View>
         <AtInput
