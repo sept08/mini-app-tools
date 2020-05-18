@@ -1,6 +1,6 @@
 {
   "name": "mini-app-tools",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "包含创建码生成器等辅助工具",
   "templateInfo": {
