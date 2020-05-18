@@ -7,11 +7,12 @@ import './index.scss'
 interface IState {
   key: string,
   offset: string,
+  showOffset: boolean,
   codeType: string
   codeTypeIndex: number,
 }
 
-const codeTypeList = ['短码', '长码'];
+const codeTypeList = ['查查码', '短码', '长码'];
 
 export default class Index extends Component<{}, IState> {
   /**
@@ -30,8 +31,9 @@ export default class Index extends Component<{}, IState> {
     this.state = {
       key: '',
       offset: '',
-      codeType: '短码',
-      codeTypeIndex: 0,
+      showOffset: false,
+      codeType: '查查码',
+      codeTypeIndex: Secret.CodeTypeEnum.YY,
     }
   }
 
@@ -46,43 +48,36 @@ export default class Index extends Component<{}, IState> {
   componentDidHide () { }
 
   generationCreateCode = () => {
-    const curTimestamp = this.getCurrentTimestamp();
     const offset = this.getoffset();
-    const key = this.createEncrptCode(curTimestamp, offset);
+    const key = this.createEncrptCode(offset);
     this.setState({ key });
   };
 
-  // 获取当前时间戳
-  getCurrentTimestamp = () => {
-    const { codeTypeIndex } = this.state;
-    if  (codeTypeIndex === 1) {
-      return new Date().getTime();
-    } else {
-      return parseInt(`${new Date().getTime() / 60000}`);
-    }
-  };
-
   // 生成加密码
-  createEncrptCode = (origin, offset) => {
+  createEncrptCode = (offset) => {
     const { codeTypeIndex } = this.state;
-    if (codeTypeIndex === 0) {
-      return Secret.Encrypt_base64(origin, offset);
-    } else if (codeTypeIndex === 1) {
-      return Secret.Encrypt(origin, offset);
+    switch (codeTypeIndex) {
+      case Secret.CodeTypeEnum.AES:
+        return Secret.Encrypt(offset);
+      case Secret.CodeTypeEnum.Base64:
+        return Secret.Encrypt_base64(offset);
+      case Secret.CodeTypeEnum.YY:
+      default:
+        return Secret.EncryptYY();
     }
   };
 
   // 获取偏移量
   getoffset = () => {
     const { offset, codeTypeIndex } = this.state;
-    if (offset) {
-      if (codeTypeIndex === 0) {
-        return Number(offset);
-      } else if (codeTypeIndex === 1) {
-        return Secret.GenerateOffset(offset)
-      }
-    } else {
-      return codeTypeIndex === 0 ? 0 : '';
+    switch (codeTypeIndex) {
+      case Secret.CodeTypeEnum.AES:
+        return offset || '';
+      case Secret.CodeTypeEnum.Base64:
+        return !isNaN(Number(offset)) ? Number(offset) : offset;
+      case Secret.CodeTypeEnum.YY:
+      default:
+        return !isNaN(Number(offset)) ? Number(offset) || 10 : 10
     }
   };
 
@@ -95,12 +90,16 @@ export default class Index extends Component<{}, IState> {
   };
 
   changeCodeType = (event) => {
-    const index = Number(event.detail.value)
+    const index = Number(event.detail.value);
     this.setState({ codeType: codeTypeList[index], codeTypeIndex: index })
   };
 
+  changeShowOffset = () => {
+    this.setState({ showOffset: !this.state.showOffset })
+  };
+
   render () {
-    const { key, offset, codeTypeIndex } = this.state;
+    const { key, offset, showOffset, codeTypeIndex } = this.state;
     return (
       <View className='index'>
         <Picker
@@ -127,18 +126,18 @@ export default class Index extends Component<{}, IState> {
           </View>
         </View>
         <View className='at-article'>
-          <View className='at-article__h2'>Tips：</View>
+          <View className='at-article__h2' onClick={this.changeShowOffset}>Tips：</View>
           <View className='at-article__p'>· 所生成的创建码，仅在三小时内有效。</View>
-          <View className='at-article__p'>· 本小程序建议仅供内部员工使用，切勿分享给商家，如意外流出担心安全性问题，请联系开发人员获取创建码偏移量。在填写偏移量后重新生成创建码。</View>
+          {showOffset && <View className='at-article__p'>· 本小程序建议仅供内部员工使用，切勿分享给商家，如意外流出担心安全性问题，请联系开发人员获取创建码偏移量。在填写偏移量后重新生成创建码。</View>}
         </View>
-        <AtInput
+        {showOffset && <AtInput
             name='offset'
             title='偏移量'
             type='number'
             placeholder='请输入偏移量'
             value={offset}
             onChange={this.changeOffset}
-        />
+        />}
       </View>
     )
   }
