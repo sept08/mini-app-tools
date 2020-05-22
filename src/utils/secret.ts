@@ -58,27 +58,38 @@ function Decrypt_base64(word, offset = 0) {
  */
 function EncryptYY() {
     const date = new Date();
-    const time = dateFormat('SS,HH,MM', date).split(',');
+    const time = dateFormat('SS,HH,dd,MM', date).split(',');
     let ret:Array<string> = [];
     const key1 = Number(time[0].charAt(1));
     const key2 = Number(time[0].charAt(0)) ^ key1;
     ret.push(time[0]);
+    // 时
     const numH = Number(time[1]) ^ key1;
     ret.push(numH < 10 ? `0${numH}` : `${numH}`);
-    const numM = Number(time[2]) ^ key2;
+    // 分
+    const numM = Number(time[3]) ^ key2;
     ret.push(numM < 10 ? `0${numM}` : `${numM}`);
-    DecryptYY(ret.join(''));
+    // 天
+    const numD = Number(time[2]) ^ key2;
+    ret.push(numD < 10 ? `0${numD}` : `${numD}`);
     return ret.join('');
 }
 
 function DecryptYY(word) {
+    if (word.length !== 8) return false;
     const s = word.slice(0, 2);
     const h = word.slice(2, 4);
     const m = word.slice(4, 6);
+    const d = word.slice(6, 8);
+
     const key1 = Number(s.charAt(1));
     const key2 = Number(s.charAt(0)) ^ key1;
     const originH = Number(h) ^ key1;
     const originM = Number(m) ^ key2;
+    const originD = Number(d) ^ key2;
+    // 添加时间约束
+    if (Number(s) > 60) return false;
+    if (originH > 24 || originM > 60 || originD > 31) return false;
     // 解码规则
     const curDate = new Date();
     const curH = curDate.getHours();
@@ -87,10 +98,9 @@ function DecryptYY(word) {
     const curTime = curH + curM / 60;
     const originTime = originH + originM / 60;
     if (curTime - originTime < 0) {
-        if (curTime > 3) return false;
-        else if (curTime + 24 - originTime > 3) return false;
-    } else if (curTime - originTime > 3) {
-        return false
+        if (curTime + 24 - originTime > 0.5) return false;
+    } else if (curTime - originTime > 0.5) {
+        return false;
     }
     return true;
 }
@@ -128,4 +138,5 @@ export default {
     Encrypt_base64,
     Decrypt_base64,
     EncryptYY,
+    DecryptYY,
 }
